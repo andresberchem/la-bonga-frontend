@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>La Bonga del Sinú — Pedidos en línea</title>
+
+  <link rel="stylesheet" href="/src/styles/global.css" />
+
+  <style>
+    .app-header {
+      background: var(--color-primary);
+      color: var(--text-inverse);
+      padding: var(--space-md) var(--space-lg);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .app-header h1 {
+      margin: 0;
+      font-size: var(--font-size-h3);
+    }
+
+    .app-header button {
+      background: rgba(255, 255, 255, .2);
+      color: var(--text-inverse);
+      border: none;
+      padding: var(--space-sm) var(--space-md);
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      min-height: var(--touch-target-min);
+      font-family: inherit;
+      font-size: var(--font-size-label);
+    }
+
+    .app-header button:hover {
+      background: rgba(255, 255, 255, .3);
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: var(--space-lg);
+      padding: var(--space-lg);
+      max-width: 1280px;
+      margin: 0 auto;
+      align-items: start;
+    }
+
+    .menu h2 { margin-top: 0; }
+
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: var(--space-md);
+    }
+
+    .summary-panel {
+      position: sticky;
+      top: 80px;
+    }
+
+    @media (max-width: 900px) {
+      .layout { grid-template-columns: 1fr; }
+      .summary-panel {
+        position: sticky;
+        bottom: 0;
+        top: auto;
+        z-index: 10;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="app-header">
+    <h1>🍽️ La Bonga del Sinú</h1>
+    <button id="themeToggle">🌙 Modo oscuro</button>
+  </header>
+
+  <main class="layout">
+    <section class="menu">
+      <h2>Menú</h2>
+      <div class="menu-grid" id="menuGrid"></div>
+    </section>
+
+    <aside class="summary-panel">
+      <ui-order-summary id="summary"></ui-order-summary>
+    </aside>
+  </main>
+
+  <script type="module" src="/src/app.js"></script>
+
+</body>
+</html>

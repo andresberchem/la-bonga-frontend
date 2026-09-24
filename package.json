@@ -1,0 +1,39 @@
+{
+  "name": "la-bonga-frontend",
+  "version": "1.0.0",
+  "description": "Librería de componentes UI y demo funcional del sistema de pedidos del restaurante La Bonga del Sinú. Construido con Web Components nativos, Atomic Design y Storybook 10.",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --port 3000",
+    "build": "vite build",
+    "preview": "vite preview --port 3000",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "web-components",
+    "atomic-design",
+    "storybook",
+    "vite",
+    "frontend",
+    "pos",
+    "restaurante"
+  ],
+  "author": "Andrés Berchem",
+  "license": "ISC",
+  "devDependencies": {
+    "@chromatic-com/storybook": "latest",
+    "@storybook/addon-a11y": "^10.6.0",
+    "@storybook/addon-docs": "^10.6.0",
+    "@storybook/addon-vitest": "^10.6.0",
+    "@storybook/web-components-vite": "^10.6.0",
+    "@vitest/browser-playwright": "latest",
+    "@vitest/coverage-v8": "latest",
+    "lit": "latest",
+    "playwright": "latest",
+    "storybook": "^10.6.0",
+    "vitest": "latest"
+  }
+}
