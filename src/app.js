@@ -3,6 +3,7 @@
 // Importamos los componentes que usa esta página
 import './components/molecules/ui-product-card.js';
 import './components/organisms/ui-order-summary.js';
+import './components/molecules/ui-category-tabs.js';
 
 // ---------- Datos del menú ----------
 const productos = [
@@ -12,6 +13,7 @@ const productos = [
     description: 'Tradicional cazuela con camarón, jaiba y pescado en leche de coco.',
     price: 38000,
     image: 'https://placehold.co/600x400/E65100/FFFFFF?text=La+Bonga',
+    category: 'platos',
   },
   {
     id: 'p2',
@@ -19,6 +21,7 @@ const productos = [
     description: 'Sopa típica con ñame y queso costeño.',
     price: 22000,
     image: 'https://placehold.co/600x400/2E7D32/FFFFFF?text=Mote',
+    category: 'entradas',
   },
   {
     id: 'p3',
@@ -26,6 +29,7 @@ const productos = [
     description: 'Acompañamiento tradicional del Caribe colombiano.',
     price: 9000,
     image: 'https://placehold.co/600x400/F9A825/212121?text=Arroz',
+    category: 'platos',
   },
   {
     id: 'p4',
@@ -33,22 +37,22 @@ const productos = [
     description: 'Bebida natural refrescante.',
     price: 8000,
     image: 'https://placehold.co/600x400/C62828/FFFFFF?text=Corozo',
+    category: 'bebidas',
   },
 ];
-
 // ---------- Render del menú ----------
 const menuGrid = document.getElementById('menuGrid');
 
 productos.forEach((p) => {
   const card = document.createElement('ui-product-card');
   card.setAttribute('data-id', p.id);
+  card.setAttribute('data-category', p.category);  // ← NUEVO
   card.setAttribute('name', p.name);
   card.setAttribute('description', p.description);
   card.setAttribute('price', p.price);
   card.setAttribute('image', p.image);
   menuGrid.appendChild(card);
 });
-
 // ---------- Buscador de menú ----------
 const searchInput = document.getElementById('menuSearch');
 
@@ -92,3 +96,26 @@ themeToggle.addEventListener('click', () => {
   themeToggle.textContent = isDark ? '🌙 Modo oscuro' : '☀️ Modo claro';
 });
 import './components/atoms/ui-input.js';
+// ---------- Filtro por categoría ----------
+const categoryTabs = document.getElementById('categoryTabs');
+
+categoryTabs.setCategories([
+  { id: 'all', label: 'Todos', emoji: '🍽️' },
+  { id: 'entradas', label: 'Entradas', emoji: '🥗' },
+  { id: 'platos', label: 'Platos fuertes', emoji: '🍲' },
+  { id: 'bebidas', label: 'Bebidas', emoji: '🥤' },
+]);
+
+categoryTabs.addEventListener('category-change', (e) => {
+  filterMenu(e.detail.id);
+});
+
+function filterMenu(categoryId) {
+  const cards = menuGrid.querySelectorAll('ui-product-card');
+
+  cards.forEach((card) => {
+    const cardCategory = card.getAttribute('data-category') || 'all';
+    const match = categoryId === 'all' || cardCategory === categoryId;
+    card.style.display = match ? '' : 'none';
+  });
+}
