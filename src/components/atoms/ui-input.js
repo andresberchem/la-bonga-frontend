@@ -101,6 +101,15 @@ inputTemplate.innerHTML = `
     :host([error]) .wrapper:focus-within {
       box-shadow: 0 0 0 3px rgba(198, 40, 40, .15);
     }
+          /* Ocultar el botón nativo del tipo search en WebKit */
+    input[type="search"]::-webkit-search-cancel-button,
+    input[type="search"]::-webkit-search-decoration,
+    input[type="search"]::-webkit-search-results-button,
+    input[type="search"]::-webkit-search-results-decoration {
+      -webkit-appearance: none;
+      appearance: none;
+      display: none;
+    }
   </style>
 
   <label class="wrapper" part="wrapper">
