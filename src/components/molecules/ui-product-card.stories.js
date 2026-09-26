@@ -25,7 +25,7 @@ export default {
   `,
 };
 
-const PLACEHOLDER = 'https://placehold.co/600x400/E65100/FFFFFF?text=La+Bonga';
+const PLACEHOLDER = '/src/assets/images/platillos/cazuela-mariscos.jpg';
 
 export const CazuelaDeMariscos = {
   args: {

@@ -7,37 +7,140 @@ import './components/molecules/ui-category-tabs.js';
 
 // ---------- Datos del menú ----------
 const productos = [
+  // ---- ENTRADAS ----
   {
     id: 'p1',
-    name: 'Cazuela de Mariscos',
-    description: 'Tradicional cazuela con camarón, jaiba y pescado en leche de coco.',
-    price: 38000,
-    image: 'https://placehold.co/600x400/E65100/FFFFFF?text=La+Bonga',
-    category: 'platos',
-  },
-  {
-    id: 'p2',
     name: 'Mote de Queso',
     description: 'Sopa típica con ñame y queso costeño.',
     price: 22000,
-    image: 'https://placehold.co/600x400/2E7D32/FFFFFF?text=Mote',
+    image: '/src/assets/images/platillos/mote-de-queso.jpg',
+    category: 'entradas',
+  },
+  {
+    id: 'p2',
+    name: 'Sopa de Guandú',
+    description: 'Sopa con guandú, costilla y verduras.',
+    price: 24000,
+    image: '/src/assets/images/platillos/sopa-guandu.jpg',
     category: 'entradas',
   },
   {
     id: 'p3',
-    name: 'Arroz con Coco',
-    description: 'Acompañamiento tradicional del Caribe colombiano.',
-    price: 9000,
-    image: 'https://placehold.co/600x400/F9A825/212121?text=Arroz',
-    category: 'platos',
+    name: 'Patacones con Hogao',
+    description: 'Patacones fritos con hogao de tomate y cebolla.',
+    price: 12000,
+    image: '/src/assets/images/platillos/patacones-hogao.jpg',
+    category: 'entradas',
   },
   {
     id: 'p4',
+    name: 'Ceviche de Camarón',
+    description: 'Camarones frescos con limón, ají y cilantro.',
+    price: 28000,
+    image: '/src/assets/images/platillos/ceviche-camaron.jpg',
+    category: 'entradas',
+  },
+
+  // ---- PLATOS FUERTES ----
+  {
+    id: 'p5',
+    name: 'Cazuela de Mariscos',
+    description: 'Tradicional cazuela con camarón, jaiba y pescado en leche de coco.',
+    price: 38000,
+    image: '/src/assets/images/platillos/cazuela-mariscos.jpg',
+    category: 'platos',
+  },
+  {
+    id: 'p6',
+    name: 'Mojarra Frita',
+    description: 'Mojarra frita entera con arroz de coco y patacón.',
+    price: 34000,
+    image: '/src/assets/images/platillos/mojarra-frita.jpg',
+    category: 'platos',
+  },
+  {
+    id: 'p7',
+    name: 'Arroz con Coco',
+    description: 'Acompañamiento tradicional del Caribe colombiano.',
+    price: 9000,
+    image: '/src/assets/images/platillos/arroz-coco.jpg',
+    category: 'platos',
+  },
+  {
+    id: 'p8',
+    name: 'Posta Negra Cartagenera',
+    description: 'Lomo de res en salsa dulce con arroz blanco.',
+    price: 36000,
+    image: '/src/assets/images/platillos/posta-negra.jpg',
+    category: 'platos',
+  },
+  {
+    id: 'p9',
+    name: 'Arroz de Lisa',
+    description: 'Arroz con lisa desmechada y especias costeñas.',
+    price: 30000,
+    image: '/src/assets/images/platillos/arroz-lisa.jpg',
+    category: 'platos',
+  },
+  {
+    id: 'p10',
+    name: 'Sancocho',
+    description: 'Sancocho tradicional con guandú y carne.',
+    price: 32000,
+    image: '/src/assets/images/platillos/sancocho-guandu.jpg',
+    category: 'platos',
+  },
+
+  // ---- BEBIDAS ----
+  {
+    id: 'p11',
     name: 'Jugo de Corozo',
     description: 'Bebida natural refrescante.',
     price: 8000,
-    image: 'https://placehold.co/600x400/C62828/FFFFFF?text=Corozo',
+    image: '/src/assets/images/platillos/jugo-corozo.jpg',
     category: 'bebidas',
+  },
+  {
+    id: 'p12',
+    name: 'Limonada de Coco',
+    description: 'Limonada cremosa con leche de coco.',
+    price: 12000,
+    image: '/src/assets/images/platillos/limonada-coco.jpg',
+    category: 'bebidas',
+  },
+  {
+    id: 'p13',
+    name: 'Jugo de Maracuyá',
+    description: 'Jugo natural de maracuyá.',
+    price: 8000,
+    image: '/src/assets/images/platillos/jugo-maracuya.jpg',
+    category: 'bebidas',
+  },
+  {
+    id: 'p14',
+    name: 'Agua de Panela con Limón',
+    description: 'Bebida tradicional refrescante.',
+    price: 6000,
+    image: '/src/assets/images/platillos/agua-panela.jpg',
+    category: 'bebidas',
+  },
+
+  // ---- POSTRES ----
+  {
+    id: 'p15',
+    name: 'Enyucado',
+    description: 'Postre de yuca, coco y anís.',
+    price: 10000,
+    image: '/src/assets/images/platillos/enyucado.jpg',
+    category: 'postres',
+  },
+  {
+    id: 'p16',
+    name: 'Cocadas',
+    description: 'Dulce tradicional de coco.',
+    price: 8000,
+    image: '/src/assets/images/platillos/cocadas.jpg',
+    category: 'postres',
   },
 ];
 // ---------- Render del menú ----------
@@ -104,8 +207,8 @@ categoryTabs.setCategories([
   { id: 'entradas', label: 'Entradas', emoji: '🥗' },
   { id: 'platos', label: 'Platos fuertes', emoji: '🍲' },
   { id: 'bebidas', label: 'Bebidas', emoji: '🥤' },
+  { id: 'postres', label: 'Postres', emoji: '🍰' },
 ]);
-
 categoryTabs.addEventListener('category-change', (e) => {
   filterMenu(e.detail.id);
 });

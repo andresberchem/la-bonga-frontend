@@ -29,13 +29,19 @@ template.innerHTML = `
       height: 100%;
     }
 
-    .card__img {
-      width: 100%;
-      aspect-ratio: 16 / 9;
-      object-fit: cover;
-      background: #EEEEEE;
-      display: block;
-    }
+.card__img {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  object-position: center;
+  background: linear-gradient(135deg, #F5F5F5, #E0E0E0);
+  display: block;
+  transition: transform .3s ease;
+}
+
+:host(:hover) .card__img {
+  transform: scale(1.03);
+}
 
     .card__body {
       padding: var(--space-md, 16px);
