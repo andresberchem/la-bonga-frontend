@@ -49,6 +49,21 @@ productos.forEach((p) => {
   menuGrid.appendChild(card);
 });
 
+// ---------- Buscador de menú ----------
+const searchInput = document.getElementById('menuSearch');
+
+searchInput.addEventListener('input-change', (e) => {
+  const query = e.detail.value.toLowerCase().trim();
+  const cards = menuGrid.querySelectorAll('ui-product-card');
+
+  cards.forEach((card) => {
+    const name = (card.getAttribute('name') || '').toLowerCase();
+    const desc = (card.getAttribute('description') || '').toLowerCase();
+    const match = name.includes(query) || desc.includes(query);
+    card.style.display = match ? '' : 'none';
+  });
+});
+
 // ---------- Conectar add-to-cart con el resumen ----------
 const summary = document.getElementById('summary');
 
@@ -76,3 +91,4 @@ themeToggle.addEventListener('click', () => {
   html.setAttribute('data-theme', isDark ? 'light' : 'dark');
   themeToggle.textContent = isDark ? '🌙 Modo oscuro' : '☀️ Modo claro';
 });
+import './components/atoms/ui-input.js';

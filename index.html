@@ -84,10 +84,13 @@
   </header>
 
   <main class="layout">
-    <section class="menu">
-      <h2>Menú</h2>
-      <div class="menu-grid" id="menuGrid"></div>
-    </section>
+<section class="menu">
+  <h2>Menú</h2>
+  <div style="margin-bottom: var(--space-md);">
+    <ui-input id="menuSearch" placeholder="Buscar platillo..." type="search"></ui-input>
+  </div>
+  <div class="menu-grid" id="menuGrid"></div>
+</section>
 
     <aside class="summary-panel">
       <ui-order-summary id="summary"></ui-order-summary>
