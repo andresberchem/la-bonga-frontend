@@ -65,14 +65,66 @@
       top: 80px;
     }
 
-    @media (max-width: 900px) {
-      .layout { grid-template-columns: 1fr; }
-      .summary-panel {
-        position: sticky;
-        bottom: 0;
-        top: auto;
-        z-index: 10;
+    /* ---- Botón flotante del carrito (solo móvil/tablet) ---- */
+    .floating-cart {
+      position: fixed;
+      bottom: var(--space-lg);
+      right: var(--space-lg);
+      z-index: 30;
+      display: none;
+      align-items: center;
+      gap: var(--space-sm);
+      background: var(--color-primary);
+      color: var(--text-inverse);
+      border: none;
+      padding: var(--space-sm) var(--space-lg);
+      border-radius: var(--radius-pill);
+      min-height: var(--touch-target-min);
+      font-family: inherit;
+      font-size: var(--font-size-body);
+      font-weight: var(--font-weight-bold);
+      cursor: pointer;
+      box-shadow: var(--shadow-md);
+      transition: transform .2s ease, box-shadow .2s ease;
+    }
+
+    .floating-cart:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 16px rgba(230, 81, 0, .35);
+    }
+
+    .floating-cart .badge {
+      background: rgba(255, 255, 255, .25);
+      padding: 2px 8px;
+      border-radius: var(--radius-pill);
+      font-size: var(--font-size-label);
+      min-width: 24px;
+      text-align: center;
+    }
+
+    .floating-cart[hidden] {
+      display: none;
+    }
+
+    /* ---- Responsive ---- */
+    @media (max-width: 1023px) {
+      .layout {
+        grid-template-columns: 1fr;
+        padding: var(--space-md);
       }
+
+      .summary-panel {
+        display: none;
+      }
+
+      .floating-cart {
+        display: inline-flex;
+      }
+    }
+
+    /* ---- Drawer container ---- */
+    #cartDrawer {
+      /* El propio drawer maneja su visibilidad */
     }
   </style>
 </head>
@@ -84,21 +136,33 @@
   </header>
 
   <main class="layout">
-<section class="menu">
-  <h2>Menú</h2>
-  <div style="margin-bottom: var(--space-md);">
-    <ui-category-tabs id="categoryTabs" active="all"></ui-category-tabs>
-  </div>
-  <div style="margin-bottom: var(--space-md);">
-    <ui-input id="menuSearch" placeholder="Buscar platillo..." type="search"></ui-input>
-  </div>
-  <div class="menu-grid" id="menuGrid"></div>
-</section>
+    <section class="menu">
+      <h2>Menú</h2>
+      <div style="margin-bottom: var(--space-md);">
+        <ui-category-tabs id="categoryTabs" active="all"></ui-category-tabs>
+      </div>
+      <div style="margin-bottom: var(--space-md);">
+        <ui-input id="menuSearch" placeholder="Buscar platillo..." type="search"></ui-input>
+      </div>
+      <div class="menu-grid" id="menuGrid"></div>
+    </section>
 
+    <!-- Panel lateral (solo desktop) -->
     <aside class="summary-panel">
-      <ui-order-summary id="summary"></ui-order-summary>
+      <ui-order-summary id="summaryDesktop"></ui-order-summary>
     </aside>
   </main>
+
+  <!-- Botón flotante del carrito (solo móvil/tablet) -->
+  <button class="floating-cart" id="floatingCart">
+    🛒 Ver pedido <span class="badge" id="floatingCartCount">0</span>
+  </button>
+
+  <!-- Drawer para móvil/tablet -->
+  <ui-drawer id="cartDrawer">
+    <span slot="title">Tu Pedido</span>
+    <ui-order-summary id="summaryDrawer"></ui-order-summary>
+  </ui-drawer>
 
   <script type="module" src="/src/app.js"></script>
 
