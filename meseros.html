@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#121212">
+<title>Meseros — La Bonga del Sinú</title>
+<style>*,:before,:after{box-sizing:border-box;min-width:0}html,body{background:var(--bg-light,#121212);width:100%;max-width:100%;height:100%;color:var(--text-primary,#e0e0e0);margin:0;padding:0;overflow:hidden}ui-category-tabs,ui-input,ui-product-card,ui-order-summary,ui-drawer{min-width:0;max-width:100%;display:block}.mesero-app{grid-template-rows:auto 1fr;height:100vh;display:grid}.mesero-header{background:var(--color-primary,#e65100);color:#fff;z-index:10;align-items:center;gap:10px;padding:10px 14px;display:flex;box-shadow:0 2px 4px #0000004d}.mesero-header__brand{flex:auto;align-items:center;gap:8px;min-width:0;font-size:1rem;font-weight:700;display:flex}.mesero-header__brand span{white-space:nowrap;text-overflow:ellipsis;overflow:hidden}.mesero-header__mesa{color:#fff;cursor:pointer;white-space:nowrap;background:#fff3;border:none;border-radius:6px;min-height:40px;padding:8px 12px;font-family:inherit;font-size:.9rem;font-weight:600}.mesero-header__actions{gap:6px;display:flex}.mesero-header__actions button{color:#fff;cursor:pointer;background:#fff3;border:none;border-radius:6px;min-width:40px;min-height:40px;padding:8px 10px;font-family:inherit;font-size:1rem}.mesero-header__actions button:hover{background:#ffffff4d}.mesero-body{grid-template-columns:1fr 380px;gap:12px;min-height:0;padding:12px;display:grid;overflow:hidden}.catalog-m{flex-direction:column;gap:10px;min-width:0;min-height:0;display:flex}.catalog-m__tabs,.catalog-m__search{background:var(--bg-surface,#1e1e1e);border-radius:8px;padding:6px}.catalog-m__grid{flex:1;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));align-content:start;gap:10px;padding-right:4px;display:grid;overflow-y:auto}.mesa-item{background:var(--bg-surface,#1e1e1e);cursor:pointer;text-align:left;border:1px solid #ffffff0d;border-radius:10px;justify-content:space-between;align-items:center;gap:10px;min-height:76px;padding:12px;transition:border-color .15s,background-color .15s;display:flex}.mesa-item:hover{border-color:var(--color-primary,#e65100);background:#242424}.mesa-item__info{flex:1;min-width:0}.mesa-item__name{color:var(--text-primary,#e0e0e0);white-space:nowrap;text-overflow:ellipsis;margin:0 0 4px;font-size:.95rem;font-weight:600;overflow:hidden}.mesa-item__price{color:var(--color-secondary,#4caf50);font-size:.85rem;font-weight:700}.mesa-item__add{background:var(--color-primary,#e65100);color:#fff;cursor:pointer;border:none;border-radius:8px;flex-shrink:0;justify-content:center;align-items:center;width:48px;height:48px;font-size:1.4rem;font-weight:700;line-height:1;display:inline-flex}.mesa-item__add:hover{background:var(--color-primary-hover,#bf4500)}.mesa-order{flex-direction:column;min-height:0;display:flex;overflow:hidden}.mesa-order__title{background:var(--bg-surface,#1e1e1e);border-bottom:1px solid #ffffff14;border-radius:8px 8px 0 0;justify-content:space-between;align-items:center;padding:8px 12px;display:flex}.mesa-order__title h2{color:var(--text-primary,#e0e0e0);margin:0;font-size:1rem;font-weight:700}.mesa-order__title small{color:var(--text-secondary,#b0b0b0);font-size:.8rem}.floating-cart-m{z-index:30;background:var(--color-primary,#e65100);color:#fff;cursor:pointer;border:none;border-radius:999px;align-items:center;gap:8px;min-height:56px;padding:14px 20px;font-family:inherit;font-size:1rem;font-weight:700;display:none;position:fixed;bottom:20px;right:20px;box-shadow:0 6px 12px #0006}.floating-cart-m .badge{text-align:center;background:#ffffff40;border-radius:999px;min-width:26px;padding:2px 10px;font-size:.9rem}.floating-cart-m[hidden]{display:none!important}@media (width<=899px){.mesero-body{grid-template-columns:1fr;padding:10px}.mesa-order{display:none}.floating-cart-m{display:inline-flex}.catalog-m{padding-bottom:100px}}@media (width>=900px){.floating-cart-m{display:none}.mesa-order{display:flex}}@media (width<=480px){.mesero-header__brand{font-size:.9rem}.mesero-header__mesa{min-height:36px;padding:6px 10px;font-size:.8rem}.mesero-header__actions button{min-width:36px;min-height:36px;padding:6px 8px;font-size:.9rem}}</style>
+  <script type="module" crossorigin src="./assets/meseros-DpY7Uqt3.js"></script>
+  <link rel="modulepreload" crossorigin href="./assets/ui-button-BUPy334S.js">
+  <link rel="modulepreload" crossorigin href="./assets/ui-drawer-e-olNJtB.js">
+  <link rel="stylesheet" crossorigin href="./assets/ui-button-CDlhTRhd.css">
+</head>
+<body>
+
+<div class="mesero-app">
+
+  <!-- HEADER -->
+  <header class="mesero-header">
+    <div class="mesero-header__brand">
+      🍽️ <span>Mesero: Juan</span>
+    </div>
+    <button class="mesero-header__mesa" id="btnMesa">Mesa 3 ▾</button>
+    <div class="mesero-header__actions">
+      <button id="btnTheme" title="Modo claro/oscuro">☀️</button>
+    </div>
+  </header>
+
+  <!-- CUERPO -->
+  <div class="mesero-body">
+
+    <!-- CATÁLOGO -->
+    <section class="catalog-m">
+      <div class="catalog-m__tabs">
+        <ui-category-tabs id="meseroTabs" active="all"></ui-category-tabs>
+      </div>
+      <div class="catalog-m__search">
+        <ui-input id="meseroSearch" placeholder="Buscar platillo..." type="search"></ui-input>
+      </div>
+      <div class="catalog-m__grid" id="meseroCatalog"></div>
+    </section>
+
+    <!-- PEDIDO DE LA MESA (visible en tablet+) -->
+    <aside class="mesa-order">
+      <div class="mesa-order__title">
+        <h2 id="mesaTitle">Mesa 3</h2>
+        <small id="mesaCount">0 items</small>
+      </div>
+      <ui-order-summary id="mesaSummary"></ui-order-summary>
+    </aside>
+
+  </div>
+
+</div>
+
+<!-- Botón flotante (solo móvil) -->
+<button class="floating-cart-m" id="floatingCartM" hidden>
+  🛒 Ver pedido <span class="badge" id="floatingCartCountM">0</span>
+</button>
+
+<!-- Drawer para móvil -->
+<ui-drawer id="cartDrawerM">
+  <span slot="title">Mesa 3</span>
+  <ui-order-summary id="drawerSummaryM"></ui-order-summary>
+</ui-drawer>
+
+
+</body>
+</html>
