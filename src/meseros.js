@@ -1,6 +1,6 @@
 // src/meseros.js
-
 import './components/atoms/ui-input.js';
+import './components/atoms/ui-swipeable.js';
 import './components/molecules/ui-category-tabs.js';
 import './components/organisms/ui-order-summary.js';
 import './components/organisms/ui-drawer.js';
@@ -88,6 +88,9 @@ const mesaCount = document.getElementById('mesaCount');
 // ============================================================
 // RENDER DEL CATÁLOGO
 // ============================================================
+// ============================================================
+// RENDER DEL CATÁLOGO (con swipe)
+// ============================================================
 function renderCatalog(items) {
   catalog.innerHTML = '';
 
@@ -100,6 +103,10 @@ function renderCatalog(items) {
   }
 
   items.forEach((p) => {
+    // Envolvemos el item en un swipeable
+    const wrapper = document.createElement('ui-swipeable');
+    wrapper.setAttribute('threshold', '80');
+
     const btn = document.createElement('button');
     btn.className = 'mesa-item';
     btn.setAttribute('data-id', p.id);
@@ -111,14 +118,27 @@ function renderCatalog(items) {
       <span class="mesa-item__add" aria-hidden="true">+</span>
     `;
 
+    // Tap: agregar
     btn.addEventListener('click', () => {
       cart.add({ id: p.id, name: p.name, price: p.price });
-      // Feedback visual rápido
       btn.style.borderColor = '#2E7D32';
       setTimeout(() => { btn.style.borderColor = ''; }, 250);
     });
 
-    catalog.appendChild(btn);
+    // Swipe derecha: agregar rápido
+    wrapper.addEventListener('swipe-right', () => {
+      cart.add({ id: p.id, name: p.name, price: p.price });
+      btn.style.borderColor = '#2E7D32';
+      setTimeout(() => { btn.style.borderColor = ''; }, 250);
+    });
+
+    // Swipe izquierda: mostrar info del plato
+    wrapper.addEventListener('swipe-left', () => {
+      alert(`ℹ️ ${p.name}\n\nPrecio: ${fmt(p.price)}\nCategoría: ${p.category}`);
+    });
+
+    wrapper.appendChild(btn);
+    catalog.appendChild(wrapper);
   });
 }
 
