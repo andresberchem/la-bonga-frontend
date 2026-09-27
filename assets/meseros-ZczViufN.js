@@ -1,4 +1,4 @@
-import"./ui-button-BUPy334S.js";import"./ui-drawer-e-olNJtB.js";var e=document.createElement(`template`);e.innerHTML=`
+import"./ui-category-tabs-Gv8dv0JB.js";import"./ui-drawer-Btw-wjO9.js";var e=document.createElement(`template`);e.innerHTML=`
   <style>
     :host {
       display: block;

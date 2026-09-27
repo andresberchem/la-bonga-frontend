@@ -1,4 +1,4 @@
-import"./ui-button-BUPy334S.js";var e=document.createElement(`template`);e.innerHTML=`
+import"./ui-category-tabs-Gv8dv0JB.js";var e=document.createElement(`template`);e.innerHTML=`
   <style>
     :host {
       display: block;
