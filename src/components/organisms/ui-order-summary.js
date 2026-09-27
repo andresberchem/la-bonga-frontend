@@ -31,20 +31,109 @@ orderSummaryTemplate.innerHTML = `
       display: flex;
       flex-direction: column;
       gap: var(--space-sm, 8px);
-      max-height: 320px;
+      max-height: 360px;
       overflow-y: auto;
     }
 
     .item {
-      display: flex;
-      justify-content: space-between;
+      display: grid;
+      grid-template-columns: 1fr auto auto;
       gap: var(--space-sm, 8px);
+      align-items: center;
       font-size: var(--font-size-label, 0.875rem);
       color: var(--text-primary, #212121);
+      padding: var(--space-sm, 8px) 0;
+      border-bottom: 1px solid #F0F0F0;
     }
 
-    .item__name { flex: 1; }
-    .item__qty { color: var(--text-secondary, #616161); }
+    .item:last-child {
+      border-bottom: none;
+    }
+
+    .item__info {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      min-width: 0;
+    }
+
+    .item__name {
+      font-weight: var(--font-weight-medium, 500);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .item__unit {
+      font-size: var(--font-size-small, 0.75rem);
+      color: var(--text-secondary, #616161);
+    }
+
+    .qty-controls {
+      display: inline-flex;
+      align-items: center;
+      gap: 2px;
+    }
+
+    .qty-btn {
+      width: 28px;
+      height: 28px;
+      padding: 0;
+      border: 1px solid #E0E0E0;
+      background: #FFFFFF;
+      color: var(--text-primary, #212121);
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 1rem;
+      line-height: 1;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: background-color .15s ease;
+    }
+
+    .qty-btn:hover {
+      background: #F5F5F5;
+      border-color: #BDBDBD;
+    }
+
+    .qty-value {
+      min-width: 24px;
+      text-align: center;
+      font-weight: var(--font-weight-medium, 500);
+    }
+
+    .item__right {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 2px;
+      min-width: 90px;
+    }
+
+    .item__subtotal {
+      font-weight: var(--font-weight-bold, 700);
+      color: var(--color-secondary, #2E7D32);
+    }
+
+    .remove-btn {
+      width: 24px;
+      height: 24px;
+      padding: 0;
+      border: none;
+      background: transparent;
+      color: var(--color-error, #C62828);
+      cursor: pointer;
+      border-radius: 4px;
+      font-size: .9rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .remove-btn:hover {
+      background: rgba(198, 40, 40, .1);
+    }
 
     .empty {
       color: var(--text-secondary, #616161);
@@ -77,9 +166,28 @@ orderSummaryTemplate.innerHTML = `
       color: var(--color-primary, #E65100);
       margin-top: var(--space-xs, 4px);
     }
+
+    .clear-all {
+      background: transparent;
+      border: none;
+      color: var(--text-secondary, #616161);
+      font-size: var(--font-size-small, 0.75rem);
+      cursor: pointer;
+      text-decoration: underline;
+      align-self: flex-end;
+      padding: 0;
+    }
+
+    .clear-all:hover {
+      color: var(--color-error, #C62828);
+    }
   </style>
 
-  <h2>Resumen del Pedido</h2>
+  <div style="display:flex;justify-content:space-between;align-items:center;">
+    <h2>Resumen del Pedido</h2>
+    <button class="clear-all" id="clearAll" type="button" hidden>Vaciar</button>
+  </div>
+
   <ul class="list" id="list"></ul>
   <hr class="divider" />
   <div class="totals">
@@ -105,6 +213,8 @@ class UiOrderSummary extends HTMLElement {
     this._ivaEl = this.shadowRoot.querySelector('#iva');
     this._totalEl = this.shadowRoot.querySelector('#total');
     this._confirmBtn = this.shadowRoot.querySelector('#confirm');
+    this._clearAllBtn = this.shadowRoot.querySelector('#clearAll');
+    
   }
 
   connectedCallback() {
@@ -117,6 +227,8 @@ class UiOrderSummary extends HTMLElement {
         detail: { items: [...this._items], total: this._calc().total },
       }));
     });
+
+    this._clearAllBtn.addEventListener('click', () => this.clear());
 
     this.render();
   }
@@ -134,12 +246,58 @@ class UiOrderSummary extends HTMLElement {
         qty,
       });
     }
+    this._notifyChange();
     this.render();
   }
 
+  removeItem(id) {
+    this._items = this._items.filter((i) => i.id !== id);
+    this._notifyChange();
+    this.render();
+  }
+
+  updateQty(id, delta) {
+    const item = this._items.find((i) => i.id === id);
+    if (!item) return;
+    item.qty += delta;
+    if (item.qty <= 0) {
+      this.removeItem(id);
+      return;
+    }
+    this._notifyChange();
+    this.render();
+  }
+
+  /**
+   * Vacía el carrito desde la UI (botón "Vaciar").
+   * Sí dispara summary-change.
+   */
   clear() {
     this._items = [];
+    this._notifyChange();
     this.render();
+  }
+
+  /**
+   * Reemplaza todos los items SIN disparar summary-change.
+   * Se usa para sincronizar desde app.js (fuente de verdad).
+   */
+  setItems(newItems) {
+    this._items = newItems.map((i) => ({
+      id: i.id,
+      name: i.name,
+      price: i.price,
+      qty: i.qty,
+    }));
+    this.render();
+  }
+  _notifyChange() {
+    // Notifica a la app para que actualice el contador del botón flotante
+    this.dispatchEvent(new CustomEvent('summary-change', {
+      bubbles: true,
+      composed: true,
+      detail: { items: [...this._items], total: this._calc().total },
+    }));
   }
 
   _calc() {
@@ -156,16 +314,42 @@ class UiOrderSummary extends HTMLElement {
       li.className = 'empty';
       li.textContent = 'Aún no hay productos agregados';
       this._list.appendChild(li);
+      this._clearAllBtn.hidden = true;
     } else {
+      this._clearAllBtn.hidden = false;
+
       this._items.forEach((item) => {
         const li = document.createElement('li');
         li.className = 'item';
+        li.setAttribute('data-id', item.id);
+
         li.innerHTML = `
-          <span class="item__name">
-            ${item.name} <span class="item__qty">x${item.qty}</span>
-          </span>
-          <span>${fmt(item.price * item.qty)}</span>
+          <div class="item__info">
+            <span class="item__name" title="${item.name}">${item.name}</span>
+            <span class="item__unit">${fmt(item.price)} c/u</span>
+          </div>
+          <div class="qty-controls">
+            <button class="qty-btn" data-action="dec" aria-label="Disminuir">−</button>
+            <span class="qty-value">${item.qty}</span>
+            <button class="qty-btn" data-action="inc" aria-label="Aumentar">+</button>
+          </div>
+          <div class="item__right">
+            <span class="item__subtotal">${fmt(item.price * item.qty)}</span>
+            <button class="remove-btn" data-action="remove" aria-label="Eliminar">✕ Quitar</button>
+          </div>
         `;
+
+        li.querySelectorAll('.qty-btn').forEach((btn) => {
+          btn.addEventListener('click', () => {
+            const action = btn.getAttribute('data-action');
+            this.updateQty(item.id, action === 'inc' ? 1 : -1);
+          });
+        });
+
+        li.querySelector('.remove-btn').addEventListener('click', () => {
+          this.removeItem(item.id);
+        });
+
         this._list.appendChild(li);
       });
     }

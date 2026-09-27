@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>POS — La Bonga del Sinú</title>
+<link rel="stylesheet" href="/src/styles/global.css">
+<style>
+  /* ============================================================
+     RESET
+     ============================================================ */
+  *, *::before, *::after {
+    box-sizing: border-box;
+    min-width: 0;
+  }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    max-width: 100%;
+    height: 100%;
+    overflow: hidden; /* POS no tiene scroll de página completa */
+  }
+
+  /* ============================================================
+     LAYOUT PRINCIPAL - TODO CABE EN UNA SOLA PANTALLA
+     ============================================================ */
+  .pos-app {
+    display: grid;
+    grid-template-rows: 60px 1fr;
+    height: 100vh;
+  }
+
+  /* ---------- HEADER ---------- */
+  .pos-header {
+    background: var(--color-primary, #E65100);
+    color: #FFFFFF;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    gap: 16px;
+    box-shadow: 0 2px 4px rgba(0,0,0,.15);
+  }
+
+  .pos-header__brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 700;
+    font-size: 1.1rem;
+  }
+
+  .pos-header__brand small {
+    font-size: 0.75rem;
+    opacity: .7;
+    font-weight: 400;
+    border-left: 1px solid rgba(255,255,255,.3);
+    padding-left: 12px;
+  }
+
+  .pos-header__actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .pos-header__cajero {
+    font-size: 0.85rem;
+    background: rgba(255,255,255,.15);
+    padding: 6px 12px;
+    border-radius: 6px;
+  }
+
+  .pos-header__actions button {
+    background: rgba(255,255,255,.2);
+    color: #FFFFFF;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 6px;
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    min-height: 40px;
+  }
+
+  .pos-header__actions button:hover {
+    background: rgba(255,255,255,.3);
+  }
+
+  /* ---------- CUERPO (2 COLUMNAS) ---------- */
+  .pos-body {
+    display: grid;
+    grid-template-columns: 1fr 480px;
+    gap: 16px;
+    padding: 16px;
+    background: #F5F5F5;
+    overflow: hidden;
+  }
+
+  /* ---------- COLUMNA IZQUIERDA: CATÁLOGO ---------- */
+  .catalog {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    overflow: hidden;
+    min-width: 0;
+  }
+
+  .catalog__search {
+    background: #FFFFFF;
+    border-radius: 8px;
+    padding: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,.08);
+  }
+
+  .catalog__tabs {
+    background: #FFFFFF;
+    border-radius: 8px;
+    padding: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,.08);
+  }
+
+  .catalog__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 8px;
+    overflow-y: auto;
+    flex: 1;
+    align-content: start;
+    padding-right: 4px;
+  }
+
+  /* ---------- TARJETA COMPACTA DEL CATÁLOGO ---------- */
+  .pos-item {
+    background: #FFFFFF;
+    border-radius: 8px;
+    padding: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: border-color .15s, box-shadow .15s;
+    min-height: 64px;
+    text-align: left;
+  }
+
+  .pos-item:hover {
+    border-color: var(--color-primary, #E65100);
+    box-shadow: 0 2px 6px rgba(230,81,0,.15);
+  }
+
+  .pos-item__info {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .pos-item__name {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-primary, #212121);
+    margin: 0 0 4px 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .pos-item__price {
+    font-size: 0.8rem;
+    color: var(--color-secondary, #2E7D32);
+    font-weight: 700;
+  }
+
+  .pos-item__add {
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    background: var(--color-primary, #E65100);
+    color: #FFFFFF;
+    border: none;
+    border-radius: 6px;
+    font-size: 1.2rem;
+    font-weight: 700;
+    line-height: 1;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .pos-item__add:hover {
+    background: var(--color-primary-hover, #BF4500);
+  }
+
+  /* ---------- COLUMNA DERECHA: PEDIDO ---------- */
+  .order {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .order ui-pos-table {
+    flex: 1;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ---------- RESPONSIVE: PANTALLAS CHICAS ---------- */
+  @media (max-width: 1023px) {
+    html, body {
+      overflow: auto;
+      height: auto;
+    }
+    .pos-app {
+      height: auto;
+      min-height: 100vh;
+      grid-template-rows: auto 1fr;
+    }
+    .pos-header {
+      padding: 12px 16px;
+      flex-wrap: wrap;
+      min-height: 60px;
+    }
+    .pos-body {
+      grid-template-columns: 1fr;
+      overflow: visible;
+    }
+    .catalog {
+      overflow: visible;
+    }
+    .catalog__grid {
+      overflow: visible;
+      max-height: none;
+    }
+    .order ui-pos-table {
+      overflow: visible;
+      max-height: none;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="pos-app">
+
+  <!-- HEADER -->
+  <header class="pos-header">
+    <div class="pos-header__brand">
+      🍽️ La Bonga del Sinú
+      <small>Punto de Venta</small>
+    </div>
+    <div class="pos-header__actions">
+      <span class="pos-header__cajero">Cajero: Andrés</span>
+      <button id="btnCerrar">Cerrar caja</button>
+    </div>
+  </header>
+
+  <!-- CUERPO -->
+  <div class="pos-body">
+
+    <!-- COLUMNA IZQUIERDA: CATÁLOGO -->
+    <section class="catalog">
+      <div class="catalog__tabs">
+        <ui-category-tabs id="posTabs" active="all"></ui-category-tabs>
+      </div>
+      <div class="catalog__search">
+        <ui-input id="posSearch" placeholder="Buscar producto..." type="search"></ui-input>
+      </div>
+      <div class="catalog__grid" id="posCatalog"></div>
+    </section>
+
+    <!-- COLUMNA DERECHA: PEDIDO -->
+    <aside class="order">
+      <ui-pos-table id="posTable"></ui-pos-table>
+    </aside>
+
+  </div>
+
+</div>
+
+<script type="module" src="/src/pos.js"></script>
+
+</body>
+</html>
