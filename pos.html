@@ -211,7 +211,10 @@
   }
 
   /* ---------- RESPONSIVE: PANTALLAS CHICAS ---------- */
-  @media (max-width: 1023px) {
+  /* ============================================================
+     RESPONSIVE - PANTALLAS CHICAS (< 900px)
+     ============================================================ */
+  @media (max-width: 899px) {
     html, body {
       overflow: auto;
       height: auto;
@@ -222,24 +225,68 @@
       grid-template-rows: auto 1fr;
     }
     .pos-header {
-      padding: 12px 16px;
+      padding: 10px 12px;
       flex-wrap: wrap;
-      min-height: 60px;
+      min-height: 56px;
+      gap: 8px;
     }
+    .pos-header__brand {
+      font-size: 0.95rem;
+    }
+    .pos-header__brand small {
+      display: none; /* quitamos "Punto de Venta" en móvil */
+    }
+    .pos-header__cajero {
+      font-size: 0.75rem;
+      padding: 4px 8px;
+    }
+    .pos-header__actions button {
+      padding: 6px 10px;
+      font-size: 0.75rem;
+      min-height: 36px;
+    }
+
     .pos-body {
       grid-template-columns: 1fr;
+      gap: 12px;
+      padding: 12px;
       overflow: visible;
     }
+
     .catalog {
       overflow: visible;
     }
+
     .catalog__grid {
       overflow: visible;
       max-height: none;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 8px;
     }
+
+    .pos-item {
+      min-height: 56px;
+      padding: 10px;
+    }
+
+    .pos-item__add {
+      width: 36px;
+      height: 36px;
+      font-size: 1.1rem;
+    }
+
     .order ui-pos-table {
       overflow: visible;
       max-height: none;
+    }
+  }
+
+  /* ============================================================
+     RESPONSIVE - TABLET GRANDE (900px a 1023px)
+     ============================================================ */
+  @media (min-width: 900px) and (max-width: 1023px) {
+    .pos-body {
+      grid-template-columns: 1fr 420px;
     }
   }
 </style>
