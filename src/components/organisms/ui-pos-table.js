@@ -203,7 +203,10 @@ posTableTemplate.innerHTML = `
 
   <div class="header">
     <h2>Pedido Actual</h2>
-    <span class="count" id="count">0 ítems</span>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <span class="count" id="count">0 ítems</span>
+      <small style="color:#888;font-size:11px;">F1 Buscar · F3 Cobrar · F4 Limpiar</small>
+    </div>
   </div>
 
   <table>
@@ -300,7 +303,41 @@ class UiPosTable extends HTMLElement {
     this.render();
     this.dispatchEvent(new CustomEvent('pos-clear', {
       bubbles: true, composed: true,
+      
     }));
+    
+  }
+    /**
+   * Ejecuta el cobro (lo mismo que el botón "Cobrar").
+   * Se usa desde el atajo F3.
+   */
+  cobrar() {
+    if (!this._items.length) {
+      alert('No hay productos en el pedido.');
+      return;
+    }
+    const total = this._calc().total.toLocaleString('es-CO');
+    const items = this._items.map((i) => `• ${i.name} x${i.qty}`).join('\n');
+
+    if (confirm(`¿Cobrar el pedido?\n\n${items}\n\nTotal: $${total}`)) {
+      this.dispatchEvent(new CustomEvent('pos-pay', {
+        bubbles: true,
+        composed: true,
+        detail: { items: [...this._items], total: this._calc().total },
+      }));
+    }
+  }
+
+  /**
+   * Cambia la cantidad del último producto agregado (para Ctrl+1..9).
+   * @param {number} qty
+   */
+  setLastQty(qty) {
+    if (!this._items.length) return;
+    const last = this._items[this._items.length - 1];
+    if (!last) return;
+    last.qty = qty;
+    this.render();
   }
 
   _calc() {

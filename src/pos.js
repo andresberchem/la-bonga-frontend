@@ -123,3 +123,78 @@ document.getElementById('btnCerrar').addEventListener('click', () => {
     alert('Caja cerrada. ¡Buen trabajo!');
   }
 });
+// ============================================================
+// ATAJOS DE TECLADO PARA CAJEROS
+// ============================================================
+document.addEventListener('keydown', (e) => {
+  // F1: enfocar buscador
+  if (e.key === 'F1') {
+    e.preventDefault();
+    search.focus();
+    return;
+  }
+
+  // F2: mostrar ayuda de atajos
+  if (e.key === 'F2') {
+    e.preventDefault();
+    mostrarAyuda();
+    return;
+  }
+
+  // F3: cobrar
+  if (e.key === 'F3') {
+    e.preventDefault();
+    if (table) table.cobrar();
+    return;
+  }
+
+  // F4: limpiar pedido
+  if (e.key === 'F4') {
+    e.preventDefault();
+    if (table && confirm('¿Limpiar el pedido actual?')) table.clear();
+    return;
+  }
+
+  // Esc: limpiar búsqueda o cerrar diálogos
+  if (e.key === 'Escape') {
+    const activo = document.activeElement;
+    if (activo === search.shadowRoot?.querySelector('input')) {
+      search.value = '';
+      search.dispatchEvent(new CustomEvent('input-change', {
+        bubbles: true, composed: true, detail: { value: '' }
+      }));
+      search.blur();
+    }
+    return;
+  }
+
+  // Ctrl + número: cantidad rápida
+  if (e.ctrlKey && e.key >= '1' && e.key <= '9') {
+    e.preventDefault();
+    const qty = parseInt(e.key, 10);
+    if (table) table.setLastQty(qty);
+    return;
+  }
+});
+
+// ============================================================
+// MODAL DE AYUDA DE ATAJOS
+// ============================================================
+function mostrarAyuda() {
+  const ayuda = `
+╔══════════════════════════════════════╗
+║   ATAJOS DE TECLADO — POS LA BONGA   ║
+╠══════════════════════════════════════╣
+║  F1   → Enfocar buscador             ║
+║  F2   → Ver esta ayuda               ║
+║  F3   → Cobrar el pedido             ║
+║  F4   → Limpiar el pedido            ║
+║  Esc  → Limpiar búsqueda             ║
+║  Ctrl + 1-9 → Cantidad rápida        ║
+║                                       ║
+║  (también puedes hacer click en       ║
+║   cualquier producto para agregarlo)  ║
+╚══════════════════════════════════════╝
+  `;
+  alert(ayuda);
+}
