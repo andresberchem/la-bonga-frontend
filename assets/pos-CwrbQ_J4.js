@@ -194,6 +194,80 @@ import"./ui-button-BUPy334S.js";var e=document.createElement(`template`);e.inner
       td.name { max-width: 140px; }
       .footer { flex-direction: column; align-items: stretch; }
     }
+          /* ============================================================
+       RESPONSIVE — En pantallas chicas convertir tabla en tarjetas
+       ============================================================ */
+    @media (max-width: 900px) {
+      table, thead, tbody, th, td, tr {
+        display: block;
+      }
+
+      thead {
+        display: none; /* ocultar encabezados de columnas */
+      }
+
+      tbody tr {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        grid-template-areas:
+          "name     price"
+          "qty      remove";
+        gap: 8px;
+        padding: 12px;
+        border-bottom: 1px solid #E0E0E0;
+        align-items: center;
+      }
+
+      td.name {
+        grid-area: name;
+        padding: 0;
+        font-size: 0.95rem;
+        max-width: 100%;
+        white-space: normal;
+      }
+
+      td.num {
+        grid-area: price;
+        padding: 0;
+        font-size: 0.85rem;
+        color: var(--text-secondary, #616161);
+        text-align: right;
+      }
+
+      td.num.subtotal {
+        display: none; /* el subtotal no cabe, lo mostramos abajo */
+      }
+
+      td.center {
+        padding: 0;
+      }
+
+      /* Cantidad (fila con −, N, +) */
+      td.center:nth-child(2) {
+        grid-area: qty;
+        justify-self: start;
+      }
+
+      /* Botón eliminar */
+      td.center:last-child {
+        grid-area: remove;
+        justify-self: end;
+      }
+
+      .qty-controls {
+        gap: 8px;
+      }
+
+      .qty-btn {
+        width: 36px;
+        height: 36px;
+      }
+
+      .qty-value {
+        min-width: 32px;
+        font-size: 1rem;
+      }
+    }
   </style>
 
   <div class="header">
