@@ -1,5 +1,5 @@
 // src/app.js
-
+import './components/organisms/ui-checkout-form.js';
 import './components/atoms/ui-input.js';
 import './components/molecules/ui-category-tabs.js';
 import './components/molecules/ui-product-card.js';
@@ -132,13 +132,45 @@ document.addEventListener('summary-change', (e) => {
 });
 
 // Confirmar pedido
+// ---------- Confirmar pedido: abrir formulario ----------
+const checkoutDialog = document.getElementById('checkoutDialog');
+let pendingOrder = null;
+
 document.addEventListener('order-confirmed', (e) => {
-  const total = e.detail.total.toLocaleString('es-CO');
-  const items = e.detail.items.map((i) => `• ${i.name} x${i.qty}`).join('\n');
-  alert(`✅ Pedido confirmado\n\n${items}\n\nTotal: $${total}`);
+  pendingOrder = e.detail;
+  checkoutDialog.showModal();
+});
+
+// ---------- Formulario enviado ----------
+document.addEventListener('checkout-submit', (e) => {
+  const { nombre, telefono, barrio, direccion, notas } = e.detail;
+
+  if (!pendingOrder) return;
+
+  const total = pendingOrder.total.toLocaleString('es-CO');
+  const items = pendingOrder.items.map((i) => `• ${i.name} x${i.qty}`).join('\n');
+
+  alert(
+    `✅ Pedido confirmado\n\n` +
+    `Cliente: ${nombre}\n` +
+    `Teléfono: ${telefono}\n` +
+    `Dirección: ${direccion}, ${barrio}\n` +
+    (notas ? `Notas: ${notas}\n` : '') +
+    `\n${items}\n\nTotal: $${total}`
+  );
+
   cart.clear();
+  pendingOrder = null;
+  checkoutDialog.close();
+
   const drawer = document.getElementById('cartDrawer');
   if (drawer) drawer.close();
+});
+
+// ---------- Formulario cancelado ----------
+document.addEventListener('checkout-cancel', () => {
+  pendingOrder = null;
+  checkoutDialog.close();
 });
 
 // ============================================================
