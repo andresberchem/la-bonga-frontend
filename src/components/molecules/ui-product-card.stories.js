@@ -25,7 +25,7 @@ export default {
   `,
 };
 
-const PLACEHOLDER = '/src/assets/images/platillos/cazuela-mariscos.jpg';
+const PLACEHOLDER = 'platillos/cazuela-mariscos.jpg';
 
 export const CazuelaDeMariscos = {
   args: {
